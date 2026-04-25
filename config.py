@@ -28,4 +28,4 @@ class Config:
 
     SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-here-change-this-in-production')
 
-# Triggering C2 Deployment
+# Triggering C2 Deployment part 2
