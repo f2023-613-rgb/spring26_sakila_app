@@ -1,8 +1,8 @@
-# Name: Abdul Raffay Qasim
-# Name: Team Member
-# Date: 2026-04-23
-# Minor improvement after PR review
-# Added after review feedback
+# Authors: Myhammad Nabeel Azam and don don jon
+# Date: 2026-04-25
+# Purpose: Database and Health check configuration for Sakila Flask Application
+# Minor improvement after PR review / Added after review feedback
+
 import os
 
 class Config:
@@ -14,17 +14,13 @@ class Config:
     MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'admin')
     MYSQL_DB = os.environ.get('MYSQL_DB', 'sakila')
 
+    ## Timeout is measured in seconds
+    ## Timeout is measured in seconds
+    ## Timeout is measured in seconds
     CONNECTION_TIMEOUT = int(os.environ.get('CONNECTION_TIMEOUT', '30'))
     HEALTH_CHECK_INTERVAL = int(os.environ.get('HEALTH_CHECK_INTERVAL', '10'))
 
     SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-here-change-this-in-production')
-#Author:Urwah Taj
-#Date: 2026-04-23
-# Purpose: Database configuration for Sakila Flask Application
-
-# Author: Team Member = Aliyah Cheema
-# Date: 2026-04-23
-# Purpose: Health check configuration merged from feature/add-healthcheck
 
 
 import os
