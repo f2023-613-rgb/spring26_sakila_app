@@ -73,7 +73,7 @@ jobs:
           mysql -h 127.0.0.1 -u root -padmin < sakila-db/sakila-data.sql
       - name: Run pytest
         env:
-          # Actions service containers map to 127.0.0.1
+          PYTHONPATH: .
           MYSQL_HOST: 127.0.0.1
           MYSQL_USER: root
           MYSQL_PASSWORD: admin
