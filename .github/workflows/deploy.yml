@@ -1,14 +1,12 @@
 name: Deployment Pipeline
 
 on:
-  # Trigger 1: Runs after CI Pipeline completes on main
   workflow_run:
     workflows: ["CI Pipeline"] 
     types:
       - completed
     branches:
       - main
-  # Trigger 2: Runs on push to main with specific path filters
   push:
     branches:
       - main
@@ -24,8 +22,8 @@ on:
 jobs:
   deploy-staging:
     name: Deploy to Staging
-    # Only run if it's a direct push, or if the CI pipeline actually succeeded
-    if: ${{ github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' }}
+    # Removing the ${{ }} here fixes the most common YAML crash!
+    if: github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment: staging
     
@@ -45,12 +43,13 @@ jobs:
       - name: Output Deployment Summary
         run: |
           echo "### 🚀 Staging Deployment Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- **Environment:** Staging" >> $GITHUB_STEP_SUMMARY
-          echo "- **Commit SHA:** \`$GITHUB_SHA\`" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status:** Successfully Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "- Environment: Staging" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit SHA: $GITHUB_SHA" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: Successfully Deployed" >> $GITHUB_STEP_SUMMARY
 
       - name: Slack Notification
-        run: echo "Slack notification: Deployment to staging successful"
+        run: |
+          echo "Slack notification: Deployment to staging successful"
 
   deploy-production:
     name: Deploy to Production
@@ -58,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     permissions:
-      contents: write # Crucial: Allows the bot to create a GitHub Release
+      contents: write
       
     steps:
       - name: Checkout code
@@ -73,7 +72,6 @@ jobs:
       - name: Generate Version Tag
         id: version
         run: |
-          # Creates a tag like v2026.04.25-1
           DATE_TAG=$(date +'%Y.%m.%d')
           echo "TAG_NAME=v${DATE_TAG}-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
@@ -81,9 +79,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${{ env.TAG_NAME }} \
-            --title "Release ${{ env.TAG_NAME }}" \
-            --notes "Production deployment triggered by CI/CD pipeline from commit $GITHUB_SHA."
+          gh release create ${{ env.TAG_NAME }} --title "Release ${{ env.TAG_NAME }}" --notes "Production deployment triggered by CI/CD pipeline from commit $GITHUB_SHA."
 
       - name: Slack Notification
-        run: echo "Slack notification: Deployment to production successful"
+        run: |
+          echo "Slack notification: Deployment to production successful"
