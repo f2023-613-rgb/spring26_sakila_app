@@ -1,9 +1,9 @@
+import app as app_module
 from app import app
 
 
 def test_actor_api_returns_json_error_when_db_fails(monkeypatch):
-    import app as app_module
-
+    """Test that the actor API handles DB failure gracefully."""
     def fake_get_db_connection():
         raise Exception("database unavailable")
 
@@ -19,8 +19,7 @@ def test_actor_api_returns_json_error_when_db_fails(monkeypatch):
 
 
 def test_film_api_returns_json_error_when_db_fails(monkeypatch):
-    import app as app_module
-
+    """Test that the film API handles DB failure gracefully."""
     def fake_get_db_connection():
         raise Exception("database unavailable")
 

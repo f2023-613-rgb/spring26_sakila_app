@@ -1,5 +1,6 @@
 from app import app
 from config import Config
+import app as app_module
 
 
 def test_app_exists():
@@ -17,8 +18,6 @@ def test_config_defaults_exist():
 
 
 def test_dashboard_route_handles_database_error(monkeypatch):
-    import app as app_module
-
     def fake_render_template(template_name, **context):
         return "dashboard fallback rendered"
 
