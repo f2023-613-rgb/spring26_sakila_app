@@ -1,11 +1,9 @@
-import os
-
-
-# Name: muhammad nabeel azam
-# Name: don don jon
+# Authors: Muhammad Nabeel Azam and don don jon
 # Date: 2026-04-25
-# Minor improvement after PR review
-# Added after review feedback
+# Purpose: Database and Health check configuration for Sakila Flask Application
+# Minor improvement after PR review / Added after review feedback
+
+import os
 
 
 class Config:
@@ -17,6 +15,7 @@ class Config:
     MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'admin')
     MYSQL_DB = os.environ.get('MYSQL_DB', 'sakila')
 
+    # Timeout is measured in seconds
     try:
         CONNECTION_TIMEOUT = int(os.environ.get('CONNECTION_TIMEOUT', '30'))
     except ValueError:
