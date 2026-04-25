@@ -27,3 +27,5 @@ class Config:
         HEALTH_CHECK_INTERVAL = 10
 
     SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-here-change-this-in-production')
+
+# Triggering C2 Deployment
