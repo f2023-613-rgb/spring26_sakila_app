@@ -67,8 +67,8 @@ jobs:
           pip install pytest
       - name: Import Sakila Database
         run: |
-          curl -O https://downloads.mysql.com/docs/sakila-db.zip
-          unzip sakila-db.zip
+          curl -L -O https://downloads.mysql.com/docs/sakila-db.zip
+          unzip -o sakila-db.zip
           mysql -h 127.0.0.1 -u root -padmin < sakila-db/sakila-schema.sql
           mysql -h 127.0.0.1 -u root -padmin < sakila-db/sakila-data.sql
       - name: Run pytest
