@@ -1,21 +1,34 @@
-import pytest
+import app as app_module
 from app import app
 
 
-@pytest.fixture
-def client():
-    app.config['TESTING'] = True
-    with app.test_client() as client:
-        yield client
+def test_actor_api_returns_json_error_when_db_fails(monkeypatch):
+    """Test that the actor API handles DB failure gracefully."""
+    def fake_get_db_connection():
+        raise Exception("database unavailable")
+
+    monkeypatch.setattr(app_module, "get_db_connection", fake_get_db_connection)
+
+    client = app.test_client()
+    response = client.get("/api/actor/1")
+
+    assert response.status_code == 500
+    data = response.get_json()
+    assert data is not None
+    assert "error" in data
 
 
-def test_get_actors(client):
-    """Test the /actors endpoint (or similar) returns data."""
-    # Note: If your app uses a different endpoint name, change it here
-    response = client.get('/actors')
-    if response.status_code == 200:
-        assert isinstance(response.json, list)
-    else:
-        # If the DB isn't seeded yet, it might 404 or 500,
-        # but the pipeline handles seeding!
-        pass
+def test_film_api_returns_json_error_when_db_fails(monkeypatch):
+    """Test that the film API handles DB failure gracefully."""
+    def fake_get_db_connection():
+        raise Exception("database unavailable")
+
+    monkeypatch.setattr(app_module, "get_db_connection", fake_get_db_connection)
+
+    client = app.test_client()
+    response = client.get("/api/film/1")
+
+    assert response.status_code == 500
+    data = response.get_json()
+    assert data is not None
+    assert "error" in data
